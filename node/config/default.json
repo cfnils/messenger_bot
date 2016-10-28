@@ -1,6 +1,6 @@
 {
-    "appSecret": "",
-    "pageAccessToken": "",
-    "validationToken": "",
-    "serverURL": ""
+    "appSecret": "0a0de64ede5bdd14b6b4d5a0e0aeb60e",
+    "pageAccessToken": "EAAZAdmfuypmgBAIZBmZBktAkeCaHZCEjaqCuhIwBS8mYizNfEnXnZCYYPxby6PnNY5UrPuo9gvUylJgmsQ1vrXlh3zF2igjRgShber0AYarRc6AVKOcZA2OgHJp0j1cmdabmfoITtzpLqZCIFZAKxh9qjWqHYo3Ugxn7HSa0lxSYTAZDZD",
+    "validationToken": "anytoken",
+    "serverURL": "https://07b06a19.ngrok.io"
 }

@@ -254,61 +254,41 @@ function receivedMessage(event) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    switch (messageText) {
-      case 'image':
-        sendImageMessage(senderID);
-        break;
+    
+    var greeting = new RegExp(/^(yo|ola|hola|howdy|hi|hey|hello)/i);
 
-      case 'gif':
-        sendGifMessage(senderID);
-        break;
+    if (messageText.match(greeting)) {
+      //call Graph API
+      //Get user {}
+      callGraphAPI(senderID, function(user, error) {
+        if(user) {
+          console.log(user);
+          sendTextMessage(senderID, "Hey " + user.first_name + "!");
+        } else {
+          console.log(error);
+        }
+      });
 
-      case 'audio':
-        sendAudioMessage(senderID);
-        break;
+    } else if (messageText.match('image')) {
+      sendImageMessage(senderID);
 
-      case 'video':
-        sendVideoMessage(senderID);
-        break;
+    } else if (messageText.match('gif')) {
+      sendGifMessage(senderID);
 
-      case 'file':
-        sendFileMessage(senderID);
-        break;
+    } else if (messageText.match('audio')) {
+      sendAudioMessage(senderID);
 
-      case 'button':
-        sendButtonMessage(senderID);
-        break;
+    } else if (messageText.match('button')) {
+      sendButtonMessage(senderID);
 
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
+    } else if (messageText.match('generic')) {
+      sendGenericMessage(senderID);
 
-      case 'receipt':
-        sendReceiptMessage(senderID);
-        break;
+    } else if (messageText.match('quick reply')) {
+      sendQuickReply(senderID);
 
-      case 'quick reply':
-        sendQuickReply(senderID);
-        break;        
-
-      case 'read receipt':
-        sendReadReceipt(senderID);
-        break;        
-
-      case 'typing on':
-        sendTypingOn(senderID);
-        break;        
-
-      case 'typing off':
-        sendTypingOff(senderID);
-        break;        
-
-      case 'account linking':
-        sendAccountLinking(senderID);
-        break;
-
-      default:
-        sendTextMessage(senderID, messageText);
+    } else {
+      sendTextMessage(senderID, messageText);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
@@ -825,6 +805,21 @@ function callSendAPI(messageData) {
       console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
     }
   });  
+}
+
+function callGraphAPI(userId, callback) {
+  request({
+    uri: `https://graph.facebook.com/v2.6/${userId}`,
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'GET',
+    json: true
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      callback(body, null);
+    } else {
+      callback(null, body.error);
+    }
+  });
 }
 
 // Start server
